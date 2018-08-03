@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--LOADING CONST VALS-->
+    <context:property-placeholder location="const.properties"/>
+
+    <bean id="errPr" scope="singleton" class="edu.basicConcepts.components.ErrorPrinter"/>
+    <bean id="regPr" scope="prototype" class="edu.basicConcepts.components.RegularPrinter"/>
+
+    <!--CONSTRUCTOR ARG INJECTION-->
+    <bean id="log_constructor" class="edu.basicConcepts.components.Logger"
+          init-method="setUp"
+          destroy-method="tearDown"> <!--NOT AVAILABLE FOR PROTOTYPE SCOPE-->
+        <constructor-arg name="name" value="${constext.constructorVal}"/>
+        <constructor-arg name="err" ref="errPr"/>
+        <constructor-arg name="reg" ref="regPr"/>
+    </bean>
+    <!--SETTER INJECTION-->
+    <bean id="log_setter" class="edu.basicConcepts.components.Logger">
+        <property name="name" value="${context.setterVal}"/>
+        <property name="err" ref="errPr"/>
+        <property name="reg" ref="regPr"/>
+    </bean>
+</beans>
